@@ -6,18 +6,11 @@ var Controlador = function(modelo) {
 };
 
 Controlador.prototype = {
-  agregarPregunta: function() {
-    var value = $('#pregunta').val();
-    var respuestas = [];
-
-    $('[name="option[]"]').each(function() {
-      var respuesta = $(this).val();
-      //Completar el agregado de una respuesta
-      // pusheandola al arreglo de respuestas
-      respuestas.push({'textoRespuesta': respuesta, 'cantidad': 0});
-      
-    })
+  agregarPregunta: function(value,respuestas) {
+   
     this.modelo.agregarPregunta(value, respuestas);
+
+
   },
   borrarPregunta:function(){
     var id = parseInt($('.list-group-item.active').attr('id'));
@@ -34,6 +27,9 @@ Controlador.prototype = {
       $('input[name=' + id + ']').prop('checked',false);
       contexto.agregarVoto(pregunta,respuestaSeleccionada);
     });
+  },
+  agregarVoto(pregunta, respuestaSeleccionada) {
+    contexto.modelo.agregarVoto(pregunta, respuestaSeleccionada);
   },
 
   

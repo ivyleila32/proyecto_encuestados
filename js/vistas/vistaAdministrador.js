@@ -11,7 +11,11 @@ var VistaAdministrador = function(modelo, controlador, elementos) {
   this.modelo.preguntaAgregada.suscribir(function() {
     contexto.reconstruirLista();
   });
+  this.modelo.preguntaEliminada.suscribir(function() {
+    contexto.reconstruirLista(); 
+  });
 };
+
 
 
 VistaAdministrador.prototype = {
@@ -46,15 +50,28 @@ VistaAdministrador.prototype = {
     for (var i=0;i<preguntas.length;++i){
       lista.append(this.construirElementoPregunta(preguntas[i]));
     }
+
   },
 
-  configuracionDeBotones: function(){
+  configuracionDeBotones: function () {
     var e = this.elementos;
     var contexto = this;
 
     //asociación de eventos
-    e.botonAgregarPregunta.click(function() {
-      contexto.controlador.agregarPregunta();
+    e.botonAgregarPregunta.click(function () {
+
+      var respuestas = [];
+
+      $('[name="option[]"]').each(function () {
+        var respuesta = $(this).val();
+        //Completar el agregado de una respuesta
+        // pusheandola al arreglo de respuestas
+        respuestas.push({ 'textoRespuesta': respuesta, 'cantidad': 0 });
+
+      })
+
+      var value = $('#pregunta').val();
+      contexto.controlador.agregarPregunta(value,respuestas);
       contexto.limpiarFormulario();
       
     });

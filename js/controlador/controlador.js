@@ -1,36 +1,46 @@
 /*
  * Controlador
  */
-var Controlador = function(modelo) {
+const Controlador = function(modelo) {
   this.modelo = modelo;
 };
 
 Controlador.prototype = {
-  agregarPregunta: function(value,respuestas) {
-   
-    this.modelo.agregarPregunta(value, respuestas);
-
-
+  agregarPregunta: function(pregunta, respuestas) {
+    if(typeof(pregunta) !== 'string' || pregunta.trim().length == 0) {
+      alert('ERROR - La pregunta no puede estar vacia');
+      return;
+    }
+    if(respuestas && Array.isArray(respuestas) && respuestas.length > 0) {
+      const repsFil = respuestas.filter(resp => resp.textoRespuesta.trim().length > 0);
+      if(repsFil.length > 0) {
+        this.modelo.agregarPregunta(pregunta, repsFil);
+      }
+      else {
+        alert('ERROR - La pregunta debe poseer Respuestas');  
+      }
+      
+    } 
+    else {
+      alert('ERROR - La pregunta debe poseer Respuestas');
+    }
   },
-  borrarPregunta:function(){
-    var id = parseInt($('.list-group-item.active').attr('id'));
-    this.modelo.borrarPregunta(id);
+  borrarPregunta: function(id) {
+    this.modelo.borrarPregunta(Number(id));
   },
-
-  agregarVotos: function(){
-    var contexto = this;
-    $('#preguntas').find('div').each(function(){
-      var nombrePregunta = $(this).attr('value')
-      var id = $(this).attr('id')
-      var pregunta = contexto.modelo.obtenerPregunta(nombrePregunta);
-      var respuestaSeleccionada = $('input[name=' + id + ']:checked').val();
-      $('input[name=' + id + ']').prop('checked',false);
-      contexto.agregarVoto(pregunta,respuestaSeleccionada);
-    });
+  borrarTodasPreguntas: function () {
+    this.modelo.borrarTodasPreguntas();
   },
-  agregarVoto(pregunta, respuestaSeleccionada) {
-    contexto.modelo.agregarVoto(pregunta, respuestaSeleccionada);
+  editarPregunta: function (idPregunta, pregunta, respuestas) {
+    if(typeof(pregunta) !== 'string' || pregunta.trim().length == 0) {
+      alert('ERROR - La pregunta no puede estar vacia');
+      return;
+    }
+    this.modelo.editarPregunta(Number(idPregunta), pregunta, respuestas);
   },
-
-  
+  agregarVoto: function (idPregunta, textoRespuesta) {
+    if(idPregunta && textoRespuesta) {
+      this.modelo.sumarVotoRespuesta(Number(idPregunta), textoRespuesta);
+    }
+  }
 };

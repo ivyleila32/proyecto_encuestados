@@ -22,6 +22,14 @@ button .fa-plus {
 	background-color: #cc1952;
 }
 
+#guardarEditarPregunta {
+	background-color: rgb(200, 29, 234);
+}
+
+#guardarEditarPregunta:hover {
+	background-color: #8a19cc;
+}
+
 .botones {
 	text-align: center;
 	margin: 40px 0 60px;
